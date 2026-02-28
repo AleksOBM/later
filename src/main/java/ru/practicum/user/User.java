@@ -1,4 +1,4 @@
-package ru.yandex.practicum.user;
+package ru.practicum.user;
 
 import lombok.Data;
 
