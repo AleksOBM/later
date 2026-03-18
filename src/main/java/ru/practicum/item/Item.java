@@ -6,10 +6,13 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 @Table(name = "item", schema = "public")
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter @ToString
 public class Item {
 
 	@Id
@@ -22,14 +25,18 @@ public class Item {
 	private String url;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name="tags", joinColumns=@JoinColumn(name="item_id"))
-	@Column(name="name")
+	@CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "item_id"))
+	@Column(name = "name")
 	private Set<String> tags = new HashSet<>();
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof Item)) return false;
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof Item)) {
+			return false;
+		}
 		return id != null && id.equals(((Item) o).getId());
 	}
 

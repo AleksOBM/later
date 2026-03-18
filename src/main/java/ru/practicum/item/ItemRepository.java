@@ -1,12 +1,8 @@
 package ru.practicum.item;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ItemRepository {
-
-	List<Item> findAll();
-
-	Item save(Long userId, Item item);
-
-	void remove(long userId, long itemId);
+@Repository
+public interface ItemRepository extends JpaRepository<Item, Long> {
 }

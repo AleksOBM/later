@@ -10,7 +10,7 @@ public class ItemMapper implements Function<ItemDto, Item> {
 			return null;
 		}
 		return new Item(
-				itemDto.getId(),
+				null,
 				itemDto.getUserId(),
 				itemDto.getUrl(),
 				itemDto.getTags()

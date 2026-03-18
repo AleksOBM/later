@@ -1,7 +1,7 @@
 package ru.practicum.user;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.function.Function;
 
 public class UserDtoMapper implements Function<User, UserDto> {
@@ -15,7 +15,7 @@ public class UserDtoMapper implements Function<User, UserDto> {
 				user.getId(),
 				String.format("%s %s", user.getFirstName(), user.getLastName()),
 				user.getEmail(),
-				LocalDateTime.ofInstant(user.getRegistrationDate(), ZoneId.systemDefault()),
+				LocalDateTime.ofInstant(user.getRegistrationDate(), ZoneOffset.UTC),
 				user.getState()
 				);
 	}

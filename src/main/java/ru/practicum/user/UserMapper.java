@@ -1,6 +1,7 @@
 package ru.practicum.user;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.function.Function;
 
 public class UserMapper implements Function<UserDto, User> {
@@ -10,11 +11,12 @@ public class UserMapper implements Function<UserDto, User> {
 			return null;
 		}
 		return new User(
-				userDTO.getId(),
+				null,
 				userDTO.getFullName().split(" ")[0],
 				userDTO.getFullName().split(" ")[1],
 				userDTO.getEmail(),
-				Instant.from(userDTO.getRegistrationDate()),
+				userDTO.getRegistrationDate() == null ? Instant.now() :
+						userDTO.getRegistrationDate().toInstant(ZoneOffset.from(ZoneOffset.UTC)),
 				userDTO.getState()
 		);
 	}

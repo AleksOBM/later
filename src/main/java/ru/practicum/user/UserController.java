@@ -17,7 +17,7 @@ public class UserController {
 	}
 
 	@PostMapping
-	public UserDto saveNewUser(@RequestBody User user) {
-		return new UserDtoMapper().apply(userService.saveUser(user));
+	public UserDto saveNewUser(@RequestBody UserDto userDto) {
+		return new UserDtoMapper().apply(userService.saveUser(new UserMapper().apply(userDto)));
 	}
 }

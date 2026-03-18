@@ -18,13 +18,13 @@ public class ItemController {
 
 	@PostMapping
 	public ItemDto add(@RequestHeader("X-Later-User-Id") Long userId,
-	                @RequestBody Item item) {
-		return new ItemDtoMapper().apply(itemService.addNewItem(userId, item));
+	                @RequestBody ItemDto itemDto) {
+		return new ItemDtoMapper().apply(itemService.addNewItem(userId, new ItemMapper().apply(itemDto)));
 	}
 
 	@DeleteMapping("/{itemId}")
 	public void deleteItem(@RequestHeader("X-Later-User-Id") long userId,
-	                       @PathVariable(name="itemId") long itemId) {
+	                       @PathVariable(name = "itemId") long itemId) {
 		itemService.deleteItem(userId, itemId);
 	}
 }

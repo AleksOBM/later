@@ -5,13 +5,13 @@ import lombok.*;
 
 import java.time.Instant;
 
-
 @Entity
 @Table(name = "users", schema = "public")
-@EqualsAndHashCode
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter @ToString
 public class User {
 
 	@Id
@@ -31,4 +31,20 @@ public class User {
 
 	@Enumerated(EnumType.STRING)
 	private UserState state;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof User)) {
+			return false;
+		}
+		return id != null && id.equals(((User) o).getId());
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }
