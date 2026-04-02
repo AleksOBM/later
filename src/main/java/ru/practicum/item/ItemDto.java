@@ -1,19 +1,18 @@
 package ru.practicum.item;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.io.Serializable;
 import java.util.Set;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode(of = "id")
-public class ItemDto {
-	private Long id;
-	private Long userId;
-	private String url;
-	private Set<String> tags = new HashSet<>();
+public class ItemDto implements Serializable {
+    private Long id;
+    private Long userId;
+    private String url;
+    private Set<String> tags;
 }

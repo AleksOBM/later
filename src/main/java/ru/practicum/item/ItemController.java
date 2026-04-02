@@ -4,22 +4,29 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
+
 	private final ItemService itemService;
 
 	@GetMapping
-	public List<ItemDto> get(@RequestHeader("X-Later-User-Id") long userId) {
-		return itemService.getItems(userId).stream().map(new ItemDtoMapper()).toList();
+	public List<ItemDto> get(@RequestHeader("X-Later-User-Id") long userId,
+	                         @RequestParam(name = "tags", required = false) Set<String> tags) {
+		if (tags == null || tags.isEmpty()) {
+			return itemService.getItems(userId);
+		} else {
+			return itemService.getItems(userId, tags);
+		}
 	}
 
 	@PostMapping
 	public ItemDto add(@RequestHeader("X-Later-User-Id") Long userId,
-	                @RequestBody ItemDto itemDto) {
-		return new ItemDtoMapper().apply(itemService.addNewItem(userId, new ItemMapper().apply(itemDto)));
+	                   @RequestBody ItemDto item) {
+		return itemService.addNewItem(userId, item);
 	}
 
 	@DeleteMapping("/{itemId}")

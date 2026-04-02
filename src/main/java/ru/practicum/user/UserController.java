@@ -9,15 +9,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-	private final UserService userService;
+    private final UserService userService;
 
-	@GetMapping
-	public List<UserDto> getAllUsers() {
-		return userService.getAllUsers().stream().map(new UserDtoMapper()).toList();
-	}
+    @GetMapping
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
+    }
 
-	@PostMapping
-	public UserDto saveNewUser(@RequestBody UserDto userDto) {
-		return new UserDtoMapper().apply(userService.saveUser(new UserMapper().apply(userDto)));
-	}
+    @PostMapping
+    public UserDto saveNewUser(@RequestBody UserDto user) {
+        return userService.saveUser(user);
+    }
 }

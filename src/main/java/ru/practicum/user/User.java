@@ -1,7 +1,9 @@
 package ru.practicum.user;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.Instant;
 
@@ -10,41 +12,35 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "first_name", nullable = false)
-	private String firstName;
+    private String email;
 
-	@Column(name = "last_name")
-	private String lastName;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-	private String email;
+    @Column(name = "last_name")
+    private String lastName;
 
-	@Column(name = "registration_date")
-	private Instant registrationDate = Instant.now();
+    @Column(name = "registration_date")
+    private Instant registrationDate = Instant.now();
 
-	@Enumerated(EnumType.STRING)
-	private UserState state;
+    @Enumerated(EnumType.STRING)
+    private UserState state;
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (!(o instanceof User)) {
-			return false;
-		}
-		return id != null && id.equals(((User) o).getId());
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        return id != null && id.equals(((User) o).getId());
+    }
 
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

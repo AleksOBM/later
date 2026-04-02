@@ -1,13 +1,10 @@
 package ru.practicum.user;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface UserService {
+interface UserService {
 
-	Optional<User> getUser(long userId);
+    List<UserDto> getAllUsers();
 
-	List<User> getAllUsers();
-
-	User saveUser(User user);
+    UserDto saveUser(UserDto userDto);
 }
