@@ -1,4 +1,4 @@
-package ru.practicum.item;
+package ru.practicum.item.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import ru.practicum.user.User;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,12 +20,34 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    // исключаем все поля с отложенной загрузкой из
+    // метода toString, чтобы не было случайных обращений
+    // базе данных, например при выводе в лог.
+    @ToString.Exclude
     private User user;
 
     @Column
     private String url;
+
+    @Column(name = "resolved_url")
+    private String resolvedUrl;
+
+    @Column(name = "mime_type")
+    private String mimeType;
+
+    private String title;
+
+    @Column(name = "has_image")
+    private boolean hasImage;
+
+    @Column(name = "has_video")
+    private boolean hasVideo;
+
+    private boolean unread = true;
+
+    @Column(name = "date_resolved")
+    private Instant dateResolved;
 
     @ElementCollection
     @CollectionTable(name = "tags", joinColumns = @JoinColumn(name = "item_id"))
