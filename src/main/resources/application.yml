@@ -3,14 +3,15 @@ server:
 spring:
   application.name: later
   main.banner-mode: OFF
+  sql.init.mode: ALWAYS
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
     properties:
       hibernate.jdbc.time_zone: UTC
   datasource:
     username: dbuser
     password: 12345
-    url: jdbc:postgresql://localhost:5432/later
+    url: jdbc:postgresql://localhost:5433/later
     driver-class-name: org.postgresql.Driver

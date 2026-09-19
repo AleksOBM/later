@@ -1,10 +1,13 @@
+volumes:
+  postgres_main:
+
 services:
   db:
     image: postgres:16.1
     ports:
       - "5433:5432"
     volumes:
-      - /home/aleks/ProgramFiles/Docker/volumes/later:/var/lib/postgresql/data/
+      - postgres_main:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=later
       - POSTGRES_USER=dbuser

@@ -16,8 +16,6 @@ public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredi
 
     List<Item> findByUserId(long userId);
 
-    Optional<Item> findByUserIdAndUrl(long userId, String url);
-
     List<ItemInfo> findAllByUserId(Long userId);
 
     Optional<Item> findByUserAndResolvedUrl(User user, String resolvedUrl);
@@ -33,7 +31,7 @@ public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredi
             "where it.url like ?1 " +
             "group by it.user.id " +
             "order by count(it.id) desc")
-    List<ItemCountByUser> countItemsByUser(String urlPart);
+    List<ItemCountByUser> countItemsByUser(String url);
 
     @Query(value = "select it.user_id, count(it.id) as count " +
             "from items as it left join users as us on it.user_id = us.id " +

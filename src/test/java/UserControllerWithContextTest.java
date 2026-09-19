@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(controllers = UserController.class)
 @ContextConfiguration(classes = LaterApplication.class)
-class UserControllerTestWithContext {
+class UserControllerWithContextTest {
 
     @Autowired
     ObjectMapper mapper;

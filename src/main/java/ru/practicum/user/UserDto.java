@@ -1,21 +1,24 @@
 package ru.practicum.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
-    private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
+	Long id;
+	String email;
+	String firstName;
+	String lastName;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private String registrationDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING)
+	String registrationDate;
 
-    private UserState state;
+	UserState state;
 }

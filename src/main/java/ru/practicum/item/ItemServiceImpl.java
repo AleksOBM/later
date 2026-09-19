@@ -13,10 +13,13 @@ import ru.practicum.item.dto.GetItemRequest;
 import ru.practicum.item.dto.ItemDto;
 import ru.practicum.item.dto.ModifyItemRequest;
 import ru.practicum.item.model.Item;
+import ru.practicum.item.model.ItemCountByUser;
+import ru.practicum.item.model.ItemInfo;
 import ru.practicum.item.model.QItem;
 import ru.practicum.user.User;
 import ru.practicum.user.UserRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,12 +32,6 @@ class ItemServiceImpl implements ItemService {
 	private final ItemRepository repository;
 	private final UserRepository userRepository;
 	private final UrlMetaDataRetriever urlMetaDataRetriever;
-
-	@Override
-	public List<ItemDto> getItems(long userId) {
-		List<Item> userItems = repository.findByUserId(userId);
-		return ItemMapper.mapToItemDto(userItems);
-	}
 
 	@Override
 	@Transactional
@@ -67,6 +64,7 @@ class ItemServiceImpl implements ItemService {
 	@Override
 	@Transactional
 	public void deleteItem(long userId, long itemId) {
+
 		repository.deleteByUserIdAndId(userId, itemId);
 	}
 
@@ -129,6 +127,24 @@ class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
+	public List<ItemCountByUser> getCountsByDates(LocalDate from, LocalDate to) {
+		return repository.countByUserRegistered(from, to);
+	}
+
+	@Override
+	public List<ItemCountByUser> getCountsByUrl(String url) {
+		return repository.countItemsByUser(url);
+	}
+
+	@Override
+	public List<ItemInfo> getAllByUserId(Long userId) {
+		if (!userRepository.existsById(userId)) {
+			throw new NotFoundException("Пользователь с id=%s не найден".formatted(userId));
+		}
+		return repository.findAllByUserId(userId);
+	}
+
+	@Override
 	public ItemDto changeItem(long userId, ModifyItemRequest request) {
 		Optional<Item> maybeItem = getAndCheckPermissions(userId, request.getItemId());
 		if (maybeItem.isPresent()) {
@@ -157,7 +173,8 @@ class ItemServiceImpl implements ItemService {
 		if (maybeItem.isPresent()) {
 			Item item = maybeItem.get();
 			if (!item.getUser().getId().equals(userId)) {
-				throw new InsufficientPermissionException("You do not have permission to perform this operation");
+				throw new InsufficientPermissionException(
+						"You do not have permission to perform this operation");
 			}
 		}
 		return maybeItem;
@@ -182,16 +199,11 @@ class ItemServiceImpl implements ItemService {
 	}
 
 	private Sort makeOrderByClause(GetItemRequest.Sort sort) {
-		switch (sort) {
-			case TITLE:
-				return Sort.by("title").ascending();
-			case SITE:
-				return Sort.by("resolvedUrl").ascending();
-			case OLDEST:
-				return Sort.by("dateResolved").ascending();
-			case NEWEST:
-			default:
-				return Sort.by("dateResolved").descending();
-		}
+		return switch (sort) {
+			case TITLE -> Sort.by("title").ascending();
+			case SITE -> Sort.by("resolvedUrl").ascending();
+			case OLDEST -> Sort.by("dateResolved").ascending();
+			default -> Sort.by("dateResolved").descending();
+		};
 	}
 }

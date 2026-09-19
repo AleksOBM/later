@@ -1,40 +1,44 @@
 package ru.practicum.user;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.experimental.UtilityClass;
 
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 class UserMapper {
-    public static UserDto mapToUserDto(User user) {
-        String regDate = DateTimeFormatter
-                .ofPattern("yyyy.MM.dd hh:mm:ss")
-                .withZone(ZoneOffset.UTC)
-                .format(user.getRegistrationDate());
 
-        return new UserDto(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), regDate, user.getState());
-    }
+	public UserDto mapToUserDto(@NonNull User user) {
+		String regDate = DateTimeFormatter
+				.ofPattern("yyyy.MM.dd hh:mm:ss")
+				.withZone(ZoneOffset.UTC)
+				.format(user.getRegistrationDate());
 
-    public static List<UserDto> mapToUserDto(Iterable<User> users) {
-        List<UserDto> result = new ArrayList<>();
+		return new UserDto(
+				user.getId(),
+				user.getEmail(),
+				user.getFirstName(),
+				user.getLastName(),
+				regDate,
+				user.getState()
+		);
+	}
 
-        for (User user : users) {
-            result.add(mapToUserDto(user));
-        }
+	public List<UserDto> mapToUserDto(@NonNull Iterable<User> users) {
+		var result = new ArrayList<UserDto>();
+		users.forEach(user -> result.add(mapToUserDto(user)));
+		return result;
+	}
 
-        return result;
-    }
-
-    public static User mapToNewUser(UserDto userDto) {
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setState(userDto.getState());
-        return user;
-    }
+	public User mapToNewUser(@NonNull UserDto userDto) {
+		User user = new User();
+		user.setEmail(userDto.getEmail());
+		user.setFirstName(userDto.getFirstName());
+		user.setLastName(userDto.getLastName());
+		user.setState(userDto.getState());
+		return user;
+	}
 }
